@@ -1,0 +1,31 @@
+name: Update GCE instance container
+
+on:
+  workflow_run:
+    workflows: ["Build and Push Docker image"]
+    types:
+      - completed
+
+
+jobs:
+  update-container:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v1'
+      with:
+        credentials_json: ${{ secrets.SA_key }}
+        project_id: ${{ secrets.PROJECT_ID }}  
+
+    - name: Setup gcloud CLI
+      uses: 'google-github-actions/setup-gcloud@v1'
+      
+
+    - name: Update Container on GCE instance
+      run: |
+        gcloud compute instances update-container nodeapp-docker \
+          --container-image gcr.io/${{ secrets.PROJECT_ID }}/nodeapp:latest  
