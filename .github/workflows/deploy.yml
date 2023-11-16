@@ -28,4 +28,5 @@ jobs:
     - name: Update Container on GCE instance
       run: |
         gcloud compute instances update-container nodeapp-docker \
+          --zone us-east1-b \
           --container-image gcr.io/${{ secrets.PROJECT_ID }}/nodeapp:latest  
