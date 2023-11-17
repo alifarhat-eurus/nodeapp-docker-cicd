@@ -31,5 +31,5 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: gcr.io/${{ secrets.PROJECT_ID }}/nodeapp:latest
+          tags: gcr.io/${{ secrets.PROJECT_ID }}/nodeapp:${{ github.run_number }}
                        

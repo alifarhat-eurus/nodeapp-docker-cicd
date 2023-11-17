@@ -1,10 +1,11 @@
 name: Update GCE instance container
 
 on:
-  workflow_run:
-    workflows: ["Build and Push Docker image"]
-    types:
-      - completed
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "tag for docker image"
+        required: true 
 
 
 jobs:
@@ -29,4 +30,4 @@ jobs:
       run: |
         gcloud compute instances update-container nodeapp-docker \
           --zone us-east1-b \
-          --container-image gcr.io/${{ secrets.PROJECT_ID }}/nodeapp:latest  
+          --container-image gcr.io/${{ secrets.PROJECT_ID }}/nodeapp:${{ github.event.inputs.tag }}  
